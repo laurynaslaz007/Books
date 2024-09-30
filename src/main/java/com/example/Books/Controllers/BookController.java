@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,6 +26,15 @@ public class BookController {
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+    @GetMapping("/filter")
+    public List<Book> getFilteredBooks(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "year", required = false) Long year,
+            @RequestParam(value = "author", required = false) String author,
+            @RequestParam(value = "rating", required = false) Long rating
+    ) {
+        return bookService.findBooksByFilters(title, year, author, rating);
     }
     @PostMapping
     public Book createBook(@RequestBody Book book){
